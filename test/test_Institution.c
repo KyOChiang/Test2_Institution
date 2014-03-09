@@ -125,7 +125,7 @@ void test_isUniversityCollege_should_return_1_if_same_type_0_for_different_type(
 								  {.type = UniversityCollege}, {.type = College}};
 
 	InstitutionType institutionType[4] = {Unknown,University,UniversityCollege,College};
-
+	
 	TEST_ASSERT_EQUAL(1, isUniversityCollege(&institution[0], &institutionType[0]));
 	TEST_ASSERT_EQUAL(1, isUniversityCollege(&institution[1], &institutionType[1]));
 	TEST_ASSERT_EQUAL(1, isUniversityCollege(&institution[2], &institutionType[2]));
@@ -134,4 +134,39 @@ void test_isUniversityCollege_should_return_1_if_same_type_0_for_different_type(
 	TEST_ASSERT_EQUAL(0, isUniversityCollege(&institution[1], &institutionType[2]));
 	TEST_ASSERT_EQUAL(0, isUniversityCollege(&institution[2], &institutionType[1]));
 	TEST_ASSERT_EQUAL(0, isUniversityCollege(&institution[3], &institutionType[0]));
+}
+
+void test_Institution_select_the_university_college_only() {
+	Institution institution[4] = {{.type = Unknown},{.type = University},
+								  {.type = UniversityCollege}, {.type = College}};
+
+	LinkedList institutionList;
+	LinkedList selectedInst;
+	institutionList.head = &institution[0];
+	institutionList.tail = &institution[3];
+	InstitutionType instType = UniversityCollege;
+
+	int compareTypeStatus;
+
+	// Only Institution[2] match the type and will be push to stack
+	// before the selectedInst generated.
+	List_removeHead_ExpectAndReturn(&institutionList, &institution[0]);
+
+	List_removeHead_ExpectAndReturn(&institutionList, &institution[1]);
+
+	List_removeHead_ExpectAndReturn(&institutionList, &institution[2]);
+	Stack_push_Expect(&stack, &institution[2]);
+
+	List_removeHead_ExpectAndReturn(&institutionList, &institution[3]);
+
+	List_removeHead_ExpectAndReturn(&institutionList, NULL);
+
+	Stack_pop_ExpectAndReturn(&stack, &institution[2]);
+	List_addTail_Expect(&selectedInst, &institution[2]);
+
+	// Call SUT
+	compareTypeStatus = Institution_select(&institutionList, &selectedInst,
+											&instType, isUniversityCollege);
+
+	TEST_ASSERT_EQUAL(1, compareTypeStatus);
 }
