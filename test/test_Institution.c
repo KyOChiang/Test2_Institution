@@ -170,3 +170,73 @@ void test_Institution_select_the_university_college_only() {
 
 	TEST_ASSERT_EQUAL(1, compareTypeStatus);
 }
+
+void test_Institution_select_the_university_only() {
+	Institution institution[4] = {{.type = Unknown},{.type = University},
+								  {.type = UniversityCollege}, {.type = College}};
+
+	LinkedList institutionList;
+	LinkedList selectedInst;
+	institutionList.head = &institution[0];
+	institutionList.tail = &institution[3];
+	InstitutionType instType = University;
+
+	int compareTypeStatus;
+
+	// Only Institution[1] match the type and will be push to stack
+	// before the selectedInst generated.
+	List_removeHead_ExpectAndReturn(&institutionList, &institution[0]);
+
+	List_removeHead_ExpectAndReturn(&institutionList, &institution[1]);
+	Stack_push_Expect(&stack, &institution[1]);
+
+	List_removeHead_ExpectAndReturn(&institutionList, &institution[2]);
+
+	List_removeHead_ExpectAndReturn(&institutionList, &institution[3]);
+
+	List_removeHead_ExpectAndReturn(&institutionList, NULL);
+
+	Stack_pop_ExpectAndReturn(&stack, &institution[1]);
+	List_addTail_Expect(&selectedInst, &institution[1]);
+
+	// Call SUT
+	compareTypeStatus = Institution_select(&institutionList, &selectedInst,
+											&instType, isUniversityCollege);
+
+	TEST_ASSERT_EQUAL(1, compareTypeStatus);
+}
+
+void test_Institution_select_the_college_only() {
+	Institution institution[4] = {{.type = Unknown},{.type = University},
+								  {.type = UniversityCollege}, {.type = College}};
+
+	LinkedList institutionList;
+	LinkedList selectedInst;
+	institutionList.head = &institution[0];
+	institutionList.tail = &institution[3];
+	InstitutionType instType = College;
+
+	int compareTypeStatus;
+
+	// Only Institution[3] match the type and will be push to stack
+	// before the selectedInst generated.
+	List_removeHead_ExpectAndReturn(&institutionList, &institution[0]);
+
+	List_removeHead_ExpectAndReturn(&institutionList, &institution[1]);
+
+	List_removeHead_ExpectAndReturn(&institutionList, &institution[2]);
+
+	List_removeHead_ExpectAndReturn(&institutionList, &institution[3]);
+	Stack_push_Expect(&stack, &institution[3]);
+
+	List_removeHead_ExpectAndReturn(&institutionList, NULL);
+
+	Stack_pop_ExpectAndReturn(&stack, &institution[3]);
+	List_addTail_Expect(&selectedInst, &institution[3]);
+
+	// Call SUT
+	compareTypeStatus = Institution_select(&institutionList, &selectedInst,
+											&instType, isUniversityCollege);
+
+	TEST_ASSERT_EQUAL(1, compareTypeStatus);
+}
