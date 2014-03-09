@@ -295,3 +295,58 @@ void test_wasEstablishedBefore_not_throw_an_exception_for_institution_establishe
 	}
 	TEST_ASSERT_EQUAL(1,compareStatus);
 }
+
+void test_Institution_select_and_obtain_institution_establish_before_year2014(){
+	
+	Institution institution[6] = {{.yearEstablished = 1924},{.yearEstablished = 1938},
+								  {.yearEstablished = 1952},{.yearEstablished = 1967},
+								  {.yearEstablished = 1999},{.yearEstablished = 2013}};
+
+	int specificYear = 1980;
+	int compareStatus;
+	int numberOfSelectedInstitution;
+	LinkedList institutionList;
+	LinkedList selectedInst;
+	
+	CEXCEPTION_T ERR;
+	//Expect only institution[n], where n = 0->3 will be selected
+	List_removeHead_ExpectAndReturn(&institutionList, &institution[0]);
+	Stack_push_Expect(&stack, &institution[0]);
+
+	List_removeHead_ExpectAndReturn(&institutionList, &institution[1]);
+	Stack_push_Expect(&stack, &institution[1]);
+
+	List_removeHead_ExpectAndReturn(&institutionList, &institution[2]);
+	Stack_push_Expect(&stack, &institution[2]);
+	
+	List_removeHead_ExpectAndReturn(&institutionList, &institution[3]);
+	Stack_push_Expect(&stack, &institution[3]);
+	
+	List_removeHead_ExpectAndReturn(&institutionList, &institution[4]);
+	
+	List_removeHead_ExpectAndReturn(&institutionList, &institution[5]);
+	
+	List_removeHead_ExpectAndReturn(&institutionList, NULL);
+
+	Stack_pop_ExpectAndReturn(&stack, &institution[3]);
+	List_addTail_Expect(&selectedInst, &institution[3]);
+	
+	Stack_pop_ExpectAndReturn(&stack, &institution[2]);
+	List_addTail_Expect(&selectedInst, &institution[2]);
+	
+	Stack_pop_ExpectAndReturn(&stack, &institution[1]);
+	List_addTail_Expect(&selectedInst, &institution[1]);
+	
+	Stack_pop_ExpectAndReturn(&stack, &institution[0]);
+	List_addTail_Expect(&selectedInst, &institution[0]);
+	
+	// Call SUT
+	Try {
+	numberOfSelectedInstitution = Institution_select(&institutionList, &selectedInst,
+						                             &specificYear,wasEstablishedBefore);
+	} Catch (ERR) {
+	TEST_ASSERT_EQUAL(ERROR_YEAR_AFTER_2014, ERR);
+	}
+	TEST_ASSERT_EQUAL(4,numberOfSelectedInstitution);
+	
+}
