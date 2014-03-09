@@ -6,6 +6,7 @@ extern Stack stack; // Let testable file that include this header file\
 					   to be able use the global variable declare in src
 
 typedef enum {Unknown, University, UniversityCollege, College}InstitutionType;
+typedef enum {NO_ERROR, ERROR_YEAR_AFTER_2014} ErrorYearMessage;
 
 typedef struct Institution_t{
 	char *name;

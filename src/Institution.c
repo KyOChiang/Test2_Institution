@@ -97,8 +97,14 @@ int Institution_select(LinkedList *inputList, LinkedList *outputList,
 int wasEstablishedBefore(void *elem1, void *year) {
 	Institution *institution = (Institution *) elem1;
 
-	if((institution->yearEstablished) < *(int *)year)	
+	while(institution->yearEstablished > 2014) {
+			Throw(ERROR_YEAR_AFTER_2014); // if throw executed, the below statement
+			// would not be executed as it jump to catch statement.
+	}
+	// printf("On year %d!\n", institution->yearEstablished);
+	if((institution->yearEstablished) < *(int *)year)
 		return 1;
-	else
+	else{
 		return 0;
+	}
 }

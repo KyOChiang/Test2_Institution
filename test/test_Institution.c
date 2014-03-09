@@ -263,3 +263,35 @@ and_get_0_if_the_institution_was_established_after_year_1980() {
 	compareStatus = wasEstablishedBefore(&institution[5], &specificYear);
 	TEST_ASSERT_EQUAL(0, compareStatus);
 }
+
+void test_wasEstablishedBefore_throw_an_exception_for_institution_established_after_year_2014() {
+	Institution institution = {.yearEstablished = 2015};
+
+	int specificYear = 1980;
+	int compareStatus;
+
+	CEXCEPTION_T ERR;
+
+	Try {
+	compareStatus = wasEstablishedBefore(&institution, &specificYear);
+	} Catch(ERR) {
+	TEST_ASSERT_EQUAL(ERROR_YEAR_AFTER_2014, ERR);
+	}
+	// TEST_ASSERT_EQUAL(0,compareStatus); Not testable because has no return value
+}
+
+void test_wasEstablishedBefore_not_throw_an_exception_for_institution_established_before_year_2014() {
+	Institution institution = {.yearEstablished = 1967};
+
+	int specificYear = 1980;
+	int compareStatus;
+
+	CEXCEPTION_T ERR;
+
+	Try {
+	compareStatus = wasEstablishedBefore(&institution, &specificYear);
+	} Catch(ERR) {
+	TEST_ASSERT_EQUAL(ERROR_YEAR_AFTER_2014, ERR);
+	}
+	TEST_ASSERT_EQUAL(1,compareStatus);
+}
