@@ -20,5 +20,6 @@ int Institution_reverse(LinkedList *inputList, LinkedList *outputList);
 int isUniversityCollege(void *elem1, void *type);
 int Institution_select(LinkedList *inputList, LinkedList *outputList, \
 void *criterion, int (*compare)(void *, void *));
+int wasEstablishedBefore(void *elem, void *year);
 
 #endif // Institution_H

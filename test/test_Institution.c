@@ -240,3 +240,26 @@ void test_Institution_select_the_college_only() {
 
 	TEST_ASSERT_EQUAL(1, compareTypeStatus);
 }
+
+void test_wasEstablishedBefore_should_get_1_if_the_institution_was_established_before_year_1980\
+and_get_0_if_the_institution_was_established_after_year_1980() {
+	Institution institution[6] = {{.yearEstablished = 1924},{.yearEstablished = 1938},
+								  {.yearEstablished = 1952},{.yearEstablished = 1967},
+								  {.yearEstablished = 1999},{.yearEstablished = 2014}};
+
+	int specificYear = 1980;
+	int compareStatus;
+
+	compareStatus = wasEstablishedBefore(&institution[0], &specificYear);
+	TEST_ASSERT_EQUAL(1, compareStatus);
+	compareStatus = wasEstablishedBefore(&institution[1], &specificYear);
+	TEST_ASSERT_EQUAL(1, compareStatus);
+	compareStatus = wasEstablishedBefore(&institution[2], &specificYear);
+	TEST_ASSERT_EQUAL(1, compareStatus);
+	compareStatus = wasEstablishedBefore(&institution[3], &specificYear);
+	TEST_ASSERT_EQUAL(1, compareStatus);
+	compareStatus = wasEstablishedBefore(&institution[4], &specificYear);
+	TEST_ASSERT_EQUAL(0, compareStatus);
+	compareStatus = wasEstablishedBefore(&institution[5], &specificYear);
+	TEST_ASSERT_EQUAL(0, compareStatus);
+}

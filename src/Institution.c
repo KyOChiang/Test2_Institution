@@ -85,3 +85,20 @@ int Institution_select(LinkedList *inputList, LinkedList *outputList,
 	}
 	return noOfInstitutionSelected;
 }
+
+/* Compare if institution was established before the specific year
+ * Input:
+ *		elem1	is pointer to the first institution
+ *		year	is a pointer to year of establishment
+ * Return:
+ *		1		if institution before specific year
+ *		0		if otherwise
+ */
+int wasEstablishedBefore(void *elem1, void *year) {
+	Institution *institution = (Institution *) elem1;
+
+	if((institution->yearEstablished) < *(int *)year)	
+		return 1;
+	else
+		return 0;
+}
