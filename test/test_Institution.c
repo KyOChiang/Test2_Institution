@@ -119,4 +119,19 @@ void test_Institution_reverse_must_reverse_4_Institution_order_in_list(){
 	TEST_ASSERT_EQUAL(4, noOfReversed);
 }
 
+void test_isUniversityCollege_should_return_1_if_same_type_0_for_different_type() {
+	// Setup institution type
+	Institution institution[4] = {{.type = Unknown},{.type = University},
+								  {.type = UniversityCollege}, {.type = College}};
 
+	InstitutionType institutionType[4] = {Unknown,University,UniversityCollege,College};
+
+	TEST_ASSERT_EQUAL(1, isUniversityCollege(&institution[0], &institutionType[0]));
+	TEST_ASSERT_EQUAL(1, isUniversityCollege(&institution[1], &institutionType[1]));
+	TEST_ASSERT_EQUAL(1, isUniversityCollege(&institution[2], &institutionType[2]));
+	TEST_ASSERT_EQUAL(1, isUniversityCollege(&institution[3], &institutionType[3]));
+	TEST_ASSERT_EQUAL(0, isUniversityCollege(&institution[0], &institutionType[3]));
+	TEST_ASSERT_EQUAL(0, isUniversityCollege(&institution[1], &institutionType[2]));
+	TEST_ASSERT_EQUAL(0, isUniversityCollege(&institution[2], &institutionType[1]));
+	TEST_ASSERT_EQUAL(0, isUniversityCollege(&institution[3], &institutionType[0]));
+}

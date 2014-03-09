@@ -17,5 +17,6 @@ typedef struct Institution_t{
 }Institution;
 
 int Institution_reverse(LinkedList *inputList, LinkedList *outputList);
+int isUniversityCollege(void *elem1, void *type);
 
 #endif // Institution_H
